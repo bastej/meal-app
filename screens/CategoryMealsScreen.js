@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 
 const CategoryMealsScreen = props => {
-  const categoryId = props.navigation.getParams("categoryId");
+  const categoryId = props.navigation.getParam("categoryId");
 
   const currentCategory = CATEGORIES.find(cat => cat.id === categoryId);
   return (
@@ -26,5 +26,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+CategoryMealsScreen.navigationOptions = navData => {
+  const categoryId = navData.navigation.getParam("categoryId");
+
+  const currentCategory = CATEGORIES.find(cat => cat.id === categoryId);
+
+  return {
+    headerTitle: currentCategory.title,
+  };
+};
 
 export default CategoryMealsScreen;
