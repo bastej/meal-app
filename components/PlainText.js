@@ -7,8 +7,10 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
 
-const PlainText = ({ children, style, textWeight = "regular" }) => (
-  <Text style={{ ...styles[textWeight], ...style }}>{children}</Text>
+const PlainText = ({ children, style, textWeight = "regular", ...props }) => (
+  <Text style={{ ...styles[textWeight], ...style }} {...props}>
+    {children}
+  </Text>
 );
 
 const styles = StyleSheet.create({
