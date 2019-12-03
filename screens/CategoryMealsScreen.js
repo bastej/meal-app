@@ -13,10 +13,17 @@ const CategoryMealsScreen = props => {
   );
 
   const renderMealItem = ({
-    item: { title, duration, complexity, affordability, imageUrl },
+    item: { id, title, duration, complexity, affordability, imageUrl },
   }) => (
     <Meal
-      onPress={() => {}}
+      onPress={() => {
+        props.navigation.navigate({
+          routeName: "MealDetail",
+          params: {
+            mealId: id,
+          },
+        });
+      }}
       title={title}
       duration={duration}
       complexity={complexity}
