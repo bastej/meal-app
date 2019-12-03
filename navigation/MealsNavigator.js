@@ -4,6 +4,8 @@ import { Platform } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+
 import { Ionicons } from "@expo/vector-icons";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
@@ -39,39 +41,43 @@ const MealsNavigator = createStackNavigator(
   }
 );
 
-const MealsFavTabNavigator = createBottomTabNavigator(
-  {
-    Meals: {
-      screen: MealsNavigator,
-      navigationOptions: {
-        tabBarIcon: tabInfo => {
-          return (
-            <Ionicons
-              name="ios-restaurant"
-              size={28}
-              color={tabInfo.tintColor}
-            />
-          );
-        },
+const tabScreenConfig = {
+  Meals: {
+    screen: MealsNavigator,
+    navigationOptions: {
+      tabBarIcon: tabInfo => {
+        return (
+          <Ionicons name="ios-restaurant" size={28} color={tabInfo.tintColor} />
+        );
       },
-    },
-    Favorites: {
-      screen: FavoritesScreen,
-      navigationOptions: {
-        tabBarLabel: "My Favorite!",
-        tabBarIcon: tabInfo => {
-          return (
-            <Ionicons name="ios-star" size={28} color={tabInfo.tintColor} />
-          );
-        },
-      },
+      tabBarColor: Colors.navyBlue,
     },
   },
-  {
-    tabBarOptions: {
-      activeTintColor: Colors.orange,
+  Favorites: {
+    screen: FavoritesScreen,
+    navigationOptions: {
+      tabBarLabel: "My Favorite!",
+      tabBarIcon: tabInfo => {
+        return <Ionicons name="ios-star" size={28} color={tabInfo.tintColor} />;
+      },
+      tabBarColor: Colors.yellow,
     },
-  }
-);
+  },
+};
+
+const MealsFavTabNavigator =
+  Platform.OS === "android"
+    ? createMaterialBottomTabNavigator(tabScreenConfig, {
+        activeColor: Colors.white,
+        shifting: true,
+        // how to change bg color without shifting
+        // shifting: false
+        // barStyle: { backgroundColor: Color.navyBlue }
+      })
+    : createBottomTabNavigator(tabScreenConfig, {
+        tabBarOptions: {
+          activeTintColor: Colors.orange,
+        },
+      });
 
 export default createAppContainer(MealsFavTabNavigator);
