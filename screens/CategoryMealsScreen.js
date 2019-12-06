@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, FlatList } from "react-native";
+
 import { CATEGORIES, MEALS } from "../data/dummy-data";
-import Meal from "../components/Meal";
+
+import MealList from "../components/MealList";
 
 const CategoryMealsScreen = props => {
   const categoryId = props.navigation.getParam("categoryId");
@@ -12,46 +13,8 @@ const CategoryMealsScreen = props => {
     meal => meal.categoryIds.indexOf(categoryId) >= 0
   );
 
-  const renderMealItem = ({
-    item: { id, title, duration, complexity, affordability, imageUrl },
-  }) => (
-    <Meal
-      onPress={() => {
-        props.navigation.navigate({
-          routeName: "MealDetail",
-          params: {
-            mealId: id,
-          },
-        });
-      }}
-      title={title}
-      duration={duration}
-      complexity={complexity}
-      affordability={affordability}
-      image={imageUrl}
-    />
-  );
-
-  return (
-    <View style={styles.screen}>
-      <FlatList
-        keyExtractor={({ id }) => id}
-        data={filteredMeals}
-        renderItem={renderMealItem}
-        style={{ width: "100%" }}
-      />
-    </View>
-  );
+  return <MealList listData={filteredMeals} navigation={props.navigation} />;
 };
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 15,
-  },
-});
 
 CategoryMealsScreen.navigationOptions = navData => {
   const categoryId = navData.navigation.getParam("categoryId");
