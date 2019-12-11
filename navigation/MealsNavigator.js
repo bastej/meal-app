@@ -15,6 +15,7 @@ import MealDetailScreen from "../screens/MealDetailScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import FiltersScreen from "../screens/FiltersScreen";
 import Colors from "../constants/Colors";
+import PlainText from "../components/PlainText";
 
 const defaultNavigationOptions = {
   headerStyle: {
@@ -22,6 +23,12 @@ const defaultNavigationOptions = {
       ios: Colors.white,
       android: Colors.navyBlue,
     }),
+  },
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
   },
   headerTintColor: Platform.select({
     ios: Colors.navyBlue,
@@ -75,6 +82,9 @@ const tabScreenConfig = {
         );
       },
       tabBarColor: Colors.navyBlue,
+      // STYLING TAB LABEL: materialTabs
+      tabBarLabel:
+        Platform.OS === "android" ? <PlainText>Meals</PlainText> : "Meals",
     },
   },
   Favorites: {
@@ -85,6 +95,12 @@ const tabScreenConfig = {
         return <Ionicons name="ios-star" size={28} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.yellow,
+      tabBarLabel:
+        Platform.OS === "android" ? (
+          <PlainText>My Favorite!</PlainText>
+        ) : (
+          "My Favorite!"
+        ),
     },
   },
 };
@@ -101,6 +117,10 @@ const MealsFavTabNavigator =
     : createBottomTabNavigator(tabScreenConfig, {
         tabBarOptions: {
           activeTintColor: Colors.orange,
+          // STYLING TAB LABEL: basic Tabs
+          labelStyle: {
+            fontFamily: "open-sans",
+          },
         },
       });
 
