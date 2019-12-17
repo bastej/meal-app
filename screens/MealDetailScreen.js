@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { View, ScrollView, StyleSheet, Image } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import HeaderButton from "../components/HeaderButton";
 import PlainText from "../components/PlainText";
+
+import { toggleFavorite } from "../store/actions/meals";
 
 const MealDetailScreen = props => {
   const mealId = props.navigation.getParam("mealId");
@@ -12,6 +14,7 @@ const MealDetailScreen = props => {
   const availableMeals = useSelector(({ meals }) => meals.allMeals);
 
   const {
+    id,
     duration,
     complexity,
     affordability,
@@ -19,6 +22,16 @@ const MealDetailScreen = props => {
     ingredients,
     steps,
   } = availableMeals.find(({ id }) => id === mealId);
+
+  const dispatch = useDispatch();
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(id));
+  }, [id]);
+
+  useEffect(() => {
+    props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+  }, toggleFavoriteHandler);
 
   const renderListItem = item => (
     <View key={item} style={styles.listItem}>
@@ -70,19 +83,15 @@ const styles = StyleSheet.create({
 });
 
 MealDetailScreen.navigationOptions = navData => {
-  const mealId = navData.navigation.getParam("mealId");
-
-  const currentMeal = MEALS.find(({ id }) => id === mealId);
+  // const mealId = navData.navigation.getParam("mealId");
+  const mealTitle = navData.navigation.getParam("mealTitle");
+  const toggleFavorite = navData.navigation.getParam("toggleFav");
 
   return {
-    headerTitle: currentMeal.title,
+    headerTitle: mealTitle,
     headerRight: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Favorite"
-          iconName="ios-star"
-          onPress={() => alert("Work!")}
-        />
+        <Item title="Favorite" iconName="ios-star" onPress={toggleFavorite} />
       </HeaderButtons>
     ),
   };
