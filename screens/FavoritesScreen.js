@@ -14,7 +14,7 @@ const FavoritesScreen = props => {
 
   if (!favMeals.length || !favMeals) {
     return (
-      <View style={styles.content}>
+      <View style={styles.screen}>
         <PlainText>Favorites meal not found. Add some!</PlainText>
       </View>
     );
@@ -39,7 +39,7 @@ FavoritesScreen.navigationOptions = navData => ({
 });
 
 const styles = StyleSheet.create({
-  content: {
+  screen: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
